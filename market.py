@@ -20,3 +20,18 @@ def get_candle(market_id, unit, count, min_unit=None):
             "GET", f"{server_url}/v1/candles/{unit}", headers=headers, params=querystring)
 
     return response.json()
+
+
+# 체결량 조회
+def get_tick(market_id, count):
+    querystring = {
+        "market": market_id,
+        "count": count
+    }
+
+    headers = {"Accept": "application/json"}
+
+    response = requests.request(
+        "GET", f"{server_url}/v1/trades/ticks", headers=headers, params=querystring)
+
+    return response.json()
