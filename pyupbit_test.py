@@ -47,7 +47,7 @@ def buy_crypto_currency(ticker):
 while True:
     try:
         now = datetime.datetime.now()
-        logger.info(f"no change")
+        # logger.info(f"no change")
 
         if mid < now < mid + datetime.timedelta(seconds=10):
             target_price = get_target_price(TICKER)
@@ -60,6 +60,8 @@ while True:
         current_price = pyupbit.get_current_price(TICKER)
         if current_price > target_price:
             buy_crypto_currency(TICKER)
+
+        logger.info(f"current: {current_price}, target: {target_price}")
 
     except Exception as err:
         logger.error(err)
