@@ -24,6 +24,8 @@ logger = logging.getLogger('root_logger')
 
 def sell_crypto_currency(ticker):
     btc_balance = upbit.get_balance(ticker)
+    if not btc_balance:
+        return
     upbit.sell_market_order(ticker, btc_balance)
     logger.warn(f"sell {ticker}: {btc_balance}")
 
@@ -46,7 +48,6 @@ if __name__ == "__main__":
     while True:
         try:
             now = datetime.datetime.now()
-            # logger.info(f"no change")
 
             # get bb
             df = pyupbit.get_ohlcv(ticker, interval='minute15', count=500)
@@ -59,14 +60,14 @@ if __name__ == "__main__":
             df['bb_bbl'] = indicator_bb.bollinger_lband()
 
             # high and low indicater
-            df['bb_bbhi'] = indicator_bb.bollinger_hband_indicator()
-            df['bb_bbli'] = indicator_bb.bollinger_lband_indicator()
+            # df['bb_bbhi'] = indicator_bb.bollinger_hband_indicator()
+            # df['bb_bbli'] = indicator_bb.bollinger_lband_indicator()
 
             high_band_price = df['bb_bbh'][-1]
             low_band_price = df['bb_bbl'][-1]
-            is_high = df['bb_bbhi'][-1]
-            is_low = df['bb_bbli'][-1]
-            now_price = df['close'][-1]
+            now_price = pyupbit.get_current_price(ticker)
+            is_high = now_price > high_band_price
+            is_low = now_price < low_band_price
 
             logger.info(
                 f"cur: {now_price}, high: {high_band_price}, low: {low_band_price}")
