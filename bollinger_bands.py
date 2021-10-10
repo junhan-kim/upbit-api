@@ -23,15 +23,20 @@ logger = logging.getLogger('root_logger')
 
 
 def sell_crypto_currency(ticker):
-    btc_balance = upbit.get_balance(ticker)
-    if not btc_balance:
+    balance = upbit.get_balance(ticker)
+    if not balance:
+        logger.warn('you have no coin')
         return
-    upbit.sell_market_order(ticker, btc_balance)
-    logger.warn(f"sell {ticker}: {btc_balance}")
+
+    upbit.sell_market_order(ticker, balance)
+    logger.warn(f"sell {ticker}: {balance}")
 
 
 def buy_crypto_currency(ticker):
     krw_balance = upbit.get_balance('KRW')
+    if not krw_balance:
+        logger.warn('you have no krw')
+        return
 
     orderbook = pyupbit.get_orderbook(ticker)
     sell_price = orderbook['orderbook_units'][0]['ask_price']
@@ -60,26 +65,30 @@ if __name__ == "__main__":
             df['bb_bbl'] = indicator_bb.bollinger_lband()
 
             # high and low indicater
-            # df['bb_bbhi'] = indicator_bb.bollinger_hband_indicator()
-            # df['bb_bbli'] = indicator_bb.bollinger_lband_indicator()
+            df['bb_bbhi'] = indicator_bb.bollinger_hband_indicator()
+            df['bb_bbli'] = indicator_bb.bollinger_lband_indicator()
+            # plot_df([df['bb_bbhi'], df['bb_bbli']])
 
             high_band_price = df['bb_bbh'][-1]
             low_band_price = df['bb_bbl'][-1]
             now_price = pyupbit.get_current_price(ticker)
-            is_high = now_price > high_band_price
-            is_low = now_price < low_band_price
+            is_high = df['bb_bbhi'][-1] == 1.0
+            is_low = df['bb_bbli'][-1] == 1.0
 
-            logger.info(
-                f"cur: {now_price}, high: {high_band_price}, low: {low_band_price}")
-
+            now_status = 'None'
             if is_high:
                 logger.warn('high indicated')
+                now_status = 'high'
                 buy_crypto_currency(ticker)
             elif is_low:
                 logger.warn('low indicated')
+                now_status = 'low'
                 sell_crypto_currency(ticker)
             else:
                 pass
+
+            logger.info(
+                f"cur: {int(now_price)}, high: {int(high_band_price)}, low: {int(low_band_price)}, stat: {now_status}")
 
         except Exception as err:
             logger.error(err)
