@@ -2,6 +2,7 @@ import os
 import logging
 import time
 import datetime
+import traceback
 
 from ta.volatility import BollingerBands
 from dotenv import load_dotenv
@@ -92,5 +93,6 @@ if __name__ == "__main__":
 
         except Exception as err:
             logger.error(err)
+            traceback.print_exc()
 
         time.sleep(1)
