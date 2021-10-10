@@ -24,27 +24,15 @@ logger = logging.getLogger('root_logger')
 
 
 def sell_crypto_currency(ticker):
-    balance = upbit.get_balance(ticker)
-    if balance == 0.0:
-        logger.warn('you have no coin')
-        return
-
+    balance = upbit.get_balance(ticker) * 0.95
     upbit.sell_market_order(ticker, balance)
-    logger.warn(f"sell {ticker}: {balance}")
+    logger.warning(f"sell {ticker}: {balance}")
 
 
 def buy_crypto_currency(ticker):
-    krw_balance = upbit.get_balance('KRW')
-    if krw_balance == 0.0:
-        logger.warn('you have no krw')
-        return
-
-    orderbook = pyupbit.get_orderbook(ticker)
-    sell_price = orderbook['orderbook_units'][0]['ask_price']
-    unit = krw_balance / sell_price
-
-    upbit.buy_market_order(ticker, unit)
-    logger.warn(f"buy {ticker}: {unit}")
+    krw_balance = int(upbit.get_balance('KRW') * 0.95)
+    upbit.buy_market_order(ticker, krw_balance)
+    logger.warning(f"buy {ticker}: {krw_balance}")
 
 
 if __name__ == "__main__":
@@ -54,6 +42,7 @@ if __name__ == "__main__":
     while True:
         try:
             now = datetime.datetime.now()
+            balance = int(upbit.get_balance('KRW'))
 
             # get bb
             df = pyupbit.get_ohlcv(ticker, interval='minute15', count=500)
@@ -78,18 +67,18 @@ if __name__ == "__main__":
 
             now_status = 'None'
             if is_high:
-                logger.warn('high indicated')
+                logger.warning('high indicated')
                 now_status = 'high'
                 buy_crypto_currency(ticker)
             elif is_low:
-                logger.warn('low indicated')
+                logger.warning('low indicated')
                 now_status = 'low'
                 sell_crypto_currency(ticker)
             else:
                 pass
 
             logger.info(
-                f"cur: {int(now_price)}, high: {int(high_band_price)}, low: {int(low_band_price)}, stat: {now_status}")
+                f"bal: {balance}, cur: {int(now_price)}, high: {int(high_band_price)}, low: {int(low_band_price)}, stat: {now_status}")
 
         except Exception as err:
             logger.error(err)

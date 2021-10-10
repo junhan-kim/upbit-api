@@ -1,0 +1,18 @@
+2021-10-10 23:27:59,744 WARNING [root_logger] [bollinger_bands.py:47] - buy KRW-BTC: 0.0018369667584039121
+2021-10-10 23:28:01,364 WARNING [root_logger] [bollinger_bands.py:47] - buy KRW-BTC: 0.0018370211210081086
+2021-10-10 23:28:02,982 WARNING [root_logger] [bollinger_bands.py:47] - buy KRW-BTC: 0.0018370211210081086
+2021-10-10 23:28:04,585 WARNING [root_logger] [bollinger_bands.py:47] - buy KRW-BTC: 0.0018369395783083525
+2021-10-10 23:28:06,231 WARNING [root_logger] [bollinger_bands.py:47] - buy KRW-BTC: 0.0018370211210081086
+2021-10-10 23:28:07,912 WARNING [root_logger] [bollinger_bands.py:47] - buy KRW-BTC: 0.0018370211210081086
+2021-10-10 23:29:43,860 ERROR [root_logger] [bollinger_bands.py:96] - name 'unit' is not defined
+2021-10-10 23:29:45,004 ERROR [root_logger] [bollinger_bands.py:96] - name 'unit' is not defined
+2021-10-10 23:29:46,175 ERROR [root_logger] [bollinger_bands.py:96] - name 'unit' is not defined
+2021-10-10 23:30:20,604 ERROR [root_logger] [bollinger_bands.py:97] - name 'unit' is not defined
+2021-10-10 23:30:21,790 ERROR [root_logger] [bollinger_bands.py:97] - name 'unit' is not defined
+2021-10-10 23:30:22,938 ERROR [root_logger] [bollinger_bands.py:97] - name 'unit' is not defined
+2021-10-10 23:30:24,079 ERROR [root_logger] [bollinger_bands.py:97] - name 'unit' is not defined
+2021-10-10 23:31:35,520 ERROR [root_logger] [bollinger_bands.py:97] - name 'unit' is not defined
+2021-10-10 23:31:36,679 ERROR [root_logger] [bollinger_bands.py:97] - name 'unit' is not defined
+2021-10-10 23:36:44,638 WARNING [root_logger] [bollinger_bands.py:29] - sell KRW-BTC: 0.0017419389999999999
+2021-10-10 23:36:46,273 WARNING [root_logger] [bollinger_bands.py:29] - sell KRW-BTC: 8.71055e-05
+2021-10-10 23:36:47,895 WARNING [root_logger] [bollinger_bands.py:29] - sell KRW-BTC: 4.3605e-06
