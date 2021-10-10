@@ -51,11 +51,11 @@ def buy_crypto_currency(ticker):
 
 if __name__ == "__main__":
 
-    TICKER = 'KRW-BTC'
+    ticker = 'KRW-BTC'
     now = datetime.datetime.now()
     mid = datetime.datetime(now.year, now.month,
                             now.day) + datetime.timedelta(1)
-    target_price = get_target_price(TICKER)
+    target_price = get_target_price(ticker)
 
     while True:
         try:
@@ -63,16 +63,16 @@ if __name__ == "__main__":
             # logger.info(f"no change")
 
             if mid < now < mid + datetime.timedelta(seconds=10):
-                target_price = get_target_price(TICKER)
+                target_price = get_target_price(ticker)
                 logger.warn(f"target price : {target_price}")
                 mid = datetime.datetime(
                     now.year, now.month, now.day) + datetime.timedelta(1)
                 logger.warn(f"mid time refreshed : {mid}")
-                sell_crypto_currency(TICKER)
+                sell_crypto_currency(ticker)
 
-            current_price = pyupbit.get_current_price(TICKER)
+            current_price = pyupbit.get_current_price(ticker)
             if current_price > target_price:
-                buy_crypto_currency(TICKER)
+                buy_crypto_currency(ticker)
 
             logger.info(f"current: {current_price}, target: {target_price}")
 
