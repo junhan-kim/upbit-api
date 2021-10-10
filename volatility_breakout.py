@@ -17,12 +17,6 @@ server_url = os.getenv('UPBIT_OPEN_API_SERVER_URL')
 
 upbit = Upbit(access_key, secret_key)
 
-TICKER = 'KRW-BTC'
-
-now = datetime.datetime.now()
-mid = datetime.datetime(now.year, now.month, now.day) + datetime.timedelta(1)
-target_price = get_target_price(TICKER)
-
 set_logger()
 logger = logging.getLogger('root_logger')
 
@@ -55,26 +49,34 @@ def buy_crypto_currency(ticker):
     logger.warn(f"buy {ticker}: {unit}")
 
 
-while True:
-    try:
-        now = datetime.datetime.now()
-        # logger.info(f"no change")
+if __name__ == "__main__":
 
-        if mid < now < mid + datetime.timedelta(seconds=10):
-            target_price = get_target_price(TICKER)
-            logger.warn(f"target price : {target_price}")
-            mid = datetime.datetime(
-                now.year, now.month, now.day) + datetime.timedelta(1)
-            logger.warn(f"mid time refreshed : {mid}")
-            sell_crypto_currency(TICKER)
+    TICKER = 'KRW-BTC'
+    now = datetime.datetime.now()
+    mid = datetime.datetime(now.year, now.month,
+                            now.day) + datetime.timedelta(1)
+    target_price = get_target_price(TICKER)
 
-        current_price = pyupbit.get_current_price(TICKER)
-        if current_price > target_price:
-            buy_crypto_currency(TICKER)
+    while True:
+        try:
+            now = datetime.datetime.now()
+            # logger.info(f"no change")
 
-        logger.info(f"current: {current_price}, target: {target_price}")
+            if mid < now < mid + datetime.timedelta(seconds=10):
+                target_price = get_target_price(TICKER)
+                logger.warn(f"target price : {target_price}")
+                mid = datetime.datetime(
+                    now.year, now.month, now.day) + datetime.timedelta(1)
+                logger.warn(f"mid time refreshed : {mid}")
+                sell_crypto_currency(TICKER)
 
-    except Exception as err:
-        logger.error(err)
+            current_price = pyupbit.get_current_price(TICKER)
+            if current_price > target_price:
+                buy_crypto_currency(TICKER)
 
-    time.sleep(1)
+            logger.info(f"current: {current_price}, target: {target_price}")
+
+        except Exception as err:
+            logger.error(err)
+
+        time.sleep(1)
