@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 import pyupbit
 from pyupbit.exchange_api import Upbit
 
-from util import get_target_price, set_logger
+from util import set_logger
 
 
 load_dotenv()
@@ -25,6 +25,17 @@ target_price = get_target_price(TICKER)
 
 set_logger()
 logger = logging.getLogger('root_logger')
+
+
+def get_target_price(ticker):
+    df = pyupbit.get_ohlcv(ticker)
+    yesterday = df.iloc[-2]
+
+    today_open = yesterday['close']
+    yesterday_high = yesterday['high']
+    yesterday_low = yesterday['low']
+    target = today_open + (yesterday_high - yesterday_low) * 0.5
+    return target
 
 
 def sell_crypto_currency(ticker):
