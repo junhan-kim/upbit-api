@@ -25,7 +25,7 @@ logger = logging.getLogger('root_logger')
 
 def sell_crypto_currency(ticker):
     balance = upbit.get_balance(ticker)
-    if not balance:
+    if balance == 0.0:
         logger.warn('you have no coin')
         return
 
@@ -35,7 +35,7 @@ def sell_crypto_currency(ticker):
 
 def buy_crypto_currency(ticker):
     krw_balance = upbit.get_balance('KRW')
-    if not krw_balance:
+    if krw_balance == 0.0:
         logger.warn('you have no krw')
         return
 
